@@ -1,8 +1,18 @@
 {
-  "logoImage": "",
+  "logoImage": "/logo-afterlight-transparent.png",
   "nav": [
-    {"href": "/", "label": "Top"},
-    {"href": "/release/", "label": "Releases", "accordion": "releases"},
-    {"href": "/#about", "label": "About"}
+    {
+      "href": "/",
+      "label": "Top"
+    },
+    {
+      "href": "/release/",
+      "label": "Releases",
+      "accordion": "releases"
+    },
+    {
+      "href": "/#about",
+      "label": "About"
+    }
   ]
 }

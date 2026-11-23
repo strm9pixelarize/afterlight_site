@@ -20,9 +20,10 @@
       }
       return '<a href="' + item.href + '">' + item.label + '</a>';
     }).join('');
+    var logoText = header.logoImage ? '' :
+      '<span>' + site.siteName.replace('#', '<span class="hash">#</span>') + '</span>';
     el.innerHTML =
-      '<a class="site-logo" href="/">' + logoImg +
-        '<span>' + site.siteName.replace('#', '<span class="hash">#</span>') + '</span>' +
+      '<a class="site-logo" href="/">' + logoImg + logoText +
       '</a>' +
       '<nav class="site-nav">' + nav + '</nav>';
     // アコーディオン開閉 (外側クリック / Esc でも閉じる)
