@@ -10,13 +10,11 @@
     var logoImg = header.logoImage ? '<img class="site-logo-img" src="' + header.logoImage + '" alt="">' : '';
     var nav = (header.nav || []).map(function(item){
       if (item.accordion === 'releases'){
-        var items = (releases || []).map(function(rel){
-          return '<a href="/release/' + rel.id + '/">' + rel.title + '</a>';
-        }).join('');
+        var items = '';
         return '<span class="nav-accordion">' +
           '<a href="' + item.href + '">' + item.label + '</a>' +
           '<button class="nav-toggle" type="button" aria-expanded="false" aria-label="' + item.label + 'の一覧を開く">▾</button>' +
-          '<span class="nav-panel">' + items +
+          '<span class="nav-panel"><span class="nav-panel-items">' + items + '</span>' +
             '<a class="nav-panel-all" href="' + item.href + '">すべてのリリースを見る</a>' +
           '</span></span>';
       }
@@ -64,11 +62,18 @@
       return Promise.all([
         getJson('/config/config.json'),
         getJson('/config/config_header.json'),
-        getJson('/config/config_footer.json'),
-        getJson('/releases/index.json').catch(function(){ return []; })
+        getJson('/config/config_footer.json')
       ]).then(function(res){
-        buildHeader(res[0], res[1], res[3]);
+        buildHeader(res[0], res[1], []);
         buildFooter(res[0], res[2]);
+        getJson('/releases/index.json').then(function(releases){
+          var slot = document.querySelector('.nav-panel-items');
+          if (slot){
+            slot.innerHTML = (releases || []).map(function(rel){
+              return '<a href="/release/' + rel.id + '/">' + rel.title + '</a>';
+            }).join('');
+          }
+        }).catch(function(){});
         return { site: res[0], header: res[1], footer: res[2] };
       });
     },
