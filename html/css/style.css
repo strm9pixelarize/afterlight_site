@@ -31,6 +31,7 @@ body{
 .nav-toggle:hover{color:var(--accent-deep)}
 .nav-panel{position:absolute;top:calc(100% + 10px);right:0;min-width:220px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(43,43,38,.14);padding:6px;display:none;flex-direction:column;z-index:60}
 .nav-accordion.open .nav-panel{display:flex}
+.nav-panel-items{display:contents}
 .nav-panel a{padding:8px 12px;border-radius:8px;font-size:.92rem;white-space:nowrap}
 .nav-panel a:hover{background:#f3edda}
 .nav-panel .nav-panel-all{border-top:1px solid var(--line);margin-top:4px;padding-top:10px;color:var(--accent-deep)}
