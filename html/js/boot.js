@@ -6,4 +6,5 @@
   if (document.getElementById('latest-release')) ALIndex();
   if (document.getElementById('release-list')) ALReleases();
   if (document.getElementById('release-title')) ALAlbum();
+  if (document.getElementById('member-list')) ALAbout();
 })();

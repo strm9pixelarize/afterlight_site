@@ -23,8 +23,16 @@
       if (list.length) wrap.appendChild(releaseCard(list[0]));
     });
     ALCommon.getJson('/config/config_about.json').then(function(data){
+      document.getElementById('about-note').textContent = data.about || '';
+    });
+  };
+
+  // about.html: About 本文 + メンバー紹介
+  window.ALAbout = function(){
+    ALCommon.getJson('/config/config_about.json').then(function(data){
+      document.getElementById('about-note').textContent = data.about || '';
       var wrap = document.getElementById('member-list');
-      data.members.forEach(function(m){
+      (data.members || []).forEach(function(m){
         var div = document.createElement('div');
         div.className = 'member';
         div.innerHTML = '<h3></h3><p class="member-role"></p><p class="member-text"></p>';
@@ -33,7 +41,6 @@
         div.querySelector('.member-text').textContent = m.text;
         wrap.appendChild(div);
       });
-      document.getElementById('about-note').textContent = data.about || '';
     });
   };
 
