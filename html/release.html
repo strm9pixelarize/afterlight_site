@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Releases | After#Light</title>
+<meta name="description" content="After#Light のリリース一覧。アルバム・シングルの紹介と全曲再生。">
+<link rel="stylesheet" href="css/style.css?v=20261123b">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+
+<main>
+  <section>
+    <h2>Releases</h2>
+    <div id="release-list"></div>
+  </section>
+  <p class="back-link"><a href="index.html">← Topへ戻る</a></p>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<div class="player" id="player" hidden>
+  <button class="player-toggle" id="playerToggle" type="button" aria-label="再生/停止">▶</button>
+  <div class="player-info">
+    <p class="player-title" id="playerTitle">—</p>
+    <input class="player-seek" id="playerSeek" type="range" min="0" max="1000" value="0" aria-label="シーク">
+  </div>
+  <p class="player-time" id="playerTime">0:00</p>
+</div>
+<audio id="audio" preload="none"></audio>
+
+<script src="js/common.js?v=20261123b"></script>
+<script src="js/player.js?v=20261123b"></script>
+<script src="js/release.js?v=20261123b"></script>
+<script src="js/boot.js?v=20261123b"></script>
+</body>
+</html>

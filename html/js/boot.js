@@ -3,6 +3,7 @@
   "use strict";
   ALCommon.load();
   ALPlayer.init();
-  if (document.getElementById('release-list')) ALIndex();
+  if (document.getElementById('latest-release')) ALIndex();
+  if (document.getElementById('release-list')) ALReleases();
   if (document.getElementById('release-title')) ALAlbum();
 })();

@@ -1,24 +1,26 @@
 // リリース表示: releases/index.json と各 release.json / intro.md を描画する
 (function(){
   "use strict";
-  // index.html: リリースカード一覧 + About
+  function releaseCard(rel){
+    var card = document.createElement('article');
+    card.className = 'release-card';
+    card.innerHTML =
+      '<a class="release-card-link" href="album.html?release=' + rel.id + '">' +
+        '<img src="' + rel.cover + '" alt="">' +
+        '<div><p class="album-label">' + rel.typeLabel + '</p>' +
+        '<h3></h3><p class="release-lead"></p>' +
+        '<p class="release-more">紹介と全曲再生 →</p></div>' +
+      '</a>';
+    card.querySelector('h3').textContent = rel.title;
+    card.querySelector('.release-lead').textContent = rel.lead || '';
+    return card;
+  }
+
+  // index.html: 最新リリースだけ表示 + About
   window.ALIndex = function(){
     ALCommon.getJson('releases/index.json').then(function(data){
-      var wrap = document.getElementById('release-list');
-      data.releases.forEach(function(rel){
-        var card = document.createElement('article');
-        card.className = 'release-card';
-        card.innerHTML =
-          '<a class="release-card-link" href="album.html?release=' + rel.id + '">' +
-            '<img src="' + rel.cover + '" alt="">' +
-            '<div><p class="album-label">' + rel.typeLabel + '</p>' +
-            '<h3></h3><p class="release-lead"></p>' +
-            '<p class="release-more">紹介と全曲再生 →</p></div>' +
-          '</a>';
-        card.querySelector('h3').textContent = rel.title;
-        card.querySelector('.release-lead').textContent = rel.lead || '';
-        wrap.appendChild(card);
-      });
+      var wrap = document.getElementById('latest-release');
+      if (data.releases.length) wrap.appendChild(releaseCard(data.releases[0]));
     });
     ALCommon.getJson('config/config_members.json').then(function(data){
       var wrap = document.getElementById('member-list');
@@ -32,6 +34,14 @@
         wrap.appendChild(div);
       });
       document.getElementById('about-note').textContent = data.about || '';
+    });
+  };
+
+  // release.html: リリース一覧 (index.json の並び順 = 新しい順)
+  window.ALReleases = function(){
+    ALCommon.getJson('releases/index.json').then(function(data){
+      var wrap = document.getElementById('release-list');
+      data.releases.forEach(function(rel){ wrap.appendChild(releaseCard(rel)); });
     });
   };
 
