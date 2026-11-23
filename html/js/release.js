@@ -18,11 +18,11 @@
 
   // index.html: 最新リリースだけ表示 + About
   window.ALIndex = function(){
-    ALCommon.getJson('releases/index.json').then(function(data){
+    ALCommon.getJson('/releases/index.json').then(function(data){
       var wrap = document.getElementById('latest-release');
       if (data.releases.length) wrap.appendChild(releaseCard(data.releases[0]));
     });
-    ALCommon.getJson('config/config_members.json').then(function(data){
+    ALCommon.getJson('/config/config_members.json').then(function(data){
       var wrap = document.getElementById('member-list');
       data.members.forEach(function(m){
         var div = document.createElement('div');
@@ -39,7 +39,7 @@
 
   // release.html: リリース一覧 (index.json の並び順 = 新しい順)
   window.ALReleases = function(){
-    ALCommon.getJson('releases/index.json').then(function(data){
+    ALCommon.getJson('/releases/index.json').then(function(data){
       var wrap = document.getElementById('release-list');
       data.releases.forEach(function(rel){ wrap.appendChild(releaseCard(rel)); });
     });
@@ -47,8 +47,9 @@
 
   // album.html: ?release=<id> の紹介 (intro.md) + 全曲リスト
   window.ALAlbum = function(){
-    var id = new URLSearchParams(location.search).get('release') || 'start-button';
-    var base = 'releases/' + id + '/';
+    var seg = location.pathname.split('/').filter(Boolean);
+    var id = (seg[0] === 'release' && seg[1]) ? seg[1] : (new URLSearchParams(location.search).get('release') || 'start-button');
+    var base = '/releases/' + id + '/';
     ALCommon.getJson(base + 'release.json').then(function(rel){
       document.title = rel.title + ' | After#Light';
       document.getElementById('release-cover').src = rel.cover;

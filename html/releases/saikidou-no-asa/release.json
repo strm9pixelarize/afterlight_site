@@ -3,10 +3,10 @@
  "type": "single",
  "typeLabel": "Single",
  "title": "再起動の朝",
- "cover": "images/cover_saikidou.jpg",
+ "cover": "/images/cover_saikidou.jpg",
  "tracks": [
   {
-   "file": "audio/00_saikidou-no-asa_single.mp3",
+   "file": "/audio/00_saikidou-no-asa_single.mp3",
    "title": "再起動の朝",
    "track": null,
    "length": 190,

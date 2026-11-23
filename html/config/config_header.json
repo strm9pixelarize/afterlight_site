@@ -1,1 +1,1 @@
-{"nav":[{"href":"index.html","label":"Top"},{"href":"release.html","label":"Releases"},{"href":"album.html?release=start-button","label":"スタートボタン"},{"href":"album.html?release=saikidou-no-asa","label":"再起動の朝"},{"href":"index.html#about","label":"About"}]}
+{"nav": [{"href": "/", "label": "Top"}, {"href": "/release/", "label": "Releases"}, {"href": "/release/start-button/", "label": "スタートボタン"}, {"href": "/release/saikidou-no-asa/", "label": "再起動の朝"}, {"href": "/#about", "label": "About"}]}

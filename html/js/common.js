@@ -11,7 +11,7 @@
       return '<a href="' + item.href + '">' + item.label + '</a>';
     }).join('');
     el.innerHTML =
-      '<a class="site-logo" href="index.html">' +
+      '<a class="site-logo" href="/">' +
         site.siteName.replace('#', '<span class="hash">#</span>') +
       '</a>' +
       '<nav class="site-nav">' + nav + '</nav>';
@@ -29,9 +29,9 @@
   window.ALCommon = {
     load: function(){
       return Promise.all([
-        getJson('config/config.json'),
-        getJson('config/config_header.json'),
-        getJson('config/config_footer.json')
+        getJson('/config/config.json'),
+        getJson('/config/config_header.json'),
+        getJson('/config/config_footer.json')
       ]).then(function(res){
         buildHeader(res[0], res[1]);
         buildFooter(res[0], res[2]);

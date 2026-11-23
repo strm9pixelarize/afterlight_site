@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After#Light</title>
+<link rel="stylesheet" href="/css/style.css?v=20261123b">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+
+<main>
+  <section class="album">
+    <div class="album-head">
+      <img class="album-cover" id="release-cover" src="" alt="ジャケット">
+      <div class="album-meta">
+        <p class="album-label" id="release-type"></p>
+        <h2 id="release-title">読み込み中…</h2>
+        <button class="play-all" id="playAllBtn" type="button" hidden>▶ 通して聴く</button>
+      </div>
+    </div>
+    <article class="release-intro" id="release-intro"></article>
+    <ol class="tracklist" id="tracklist"></ol>
+  </section>
+  <p class="back-link"><a href="/release/">← Releasesへ戻る</a></p>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<div class="player" id="player" hidden>
+  <button class="player-toggle" id="playerToggle" type="button" aria-label="再生/停止">▶</button>
+  <div class="player-info">
+    <p class="player-title" id="playerTitle">—</p>
+    <input class="player-seek" id="playerSeek" type="range" min="0" max="1000" value="0" aria-label="シーク">
+  </div>
+  <p class="player-time" id="playerTime">0:00</p>
+</div>
+<audio id="audio" preload="none"></audio>
+
+<script src="/js/marked.min.js?v=20261123b"></script>
+<script src="/js/common.js?v=20261123b"></script>
+<script src="/js/player.js?v=20261123b"></script>
+<script src="/js/release.js?v=20261123b"></script>
+<script src="/js/boot.js?v=20261123b"></script>
+</body>
+</html>
