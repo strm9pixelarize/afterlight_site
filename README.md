@@ -20,7 +20,6 @@ html/
     release.js    リリース一覧と紹介ページの描画
     marked.min.js Markdown パーサ (marked v12.0.2, MIT)
   releases/
-    index.json          リリース一覧 (カード表示用)
     start-button/
       release.json      曲目・尺・歌詞
       intro.md          アルバム紹介文 ← 更新はここだけ
@@ -35,7 +34,7 @@ conf.d/nginx.conf       CSP 付きサーバー設定
 - 紹介文を直す: 対象の `intro.md` を編集して push → ホストで pull
 - メンバー紹介・リンク・ナビ: `config/*.json` を編集
 - 新しいリリースを足す: `releases/<id>/` を作って release.json + intro.md を置き、
-  `releases/index.json` と `config_header.json` に1行ずつ追加
+  追加作業はフォルダ作成だけ。一覧・トップ・ヘッダーのアコーディオンへ自動で出る (nginx の autoindex で /releases/ を自動検出)。並び順は release.json の `date` が新しい順
 - CSS/JS を変えたら html 内の `?v=` クエリを上げる (7日キャッシュ回避)
 
 ## デプロイ

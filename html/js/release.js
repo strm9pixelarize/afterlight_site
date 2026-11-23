@@ -1,4 +1,4 @@
-// リリース表示: releases/index.json と各 release.json / intro.md を描画する
+// リリース表示: /releases/ 配下のフォルダを自動検出し、各 release.json / intro.md を描画する
 (function(){
   "use strict";
   function releaseCard(rel){
@@ -18,9 +18,9 @@
 
   // index.html: 最新リリースだけ表示 + About
   window.ALIndex = function(){
-    ALCommon.getJson('/releases/index.json').then(function(data){
+    ALCommon.listReleases().then(function(list){
       var wrap = document.getElementById('latest-release');
-      if (data.releases.length) wrap.appendChild(releaseCard(data.releases[0]));
+      if (list.length) wrap.appendChild(releaseCard(list[0]));
     });
     ALCommon.getJson('/config/config_members.json').then(function(data){
       var wrap = document.getElementById('member-list');
@@ -39,9 +39,9 @@
 
   // release.html: リリース一覧 (index.json の並び順 = 新しい順)
   window.ALReleases = function(){
-    ALCommon.getJson('/releases/index.json').then(function(data){
+    ALCommon.listReleases().then(function(list){
       var wrap = document.getElementById('release-list');
-      data.releases.forEach(function(rel){ wrap.appendChild(releaseCard(rel)); });
+      list.forEach(function(rel){ wrap.appendChild(releaseCard(rel)); });
     });
   };
 

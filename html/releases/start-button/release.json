@@ -3,6 +3,8 @@
  "type": "album",
  "typeLabel": "1st Album",
  "title": "スタートボタン",
+ "date": "2026-11-23",
+ "lead": "全12曲、すべて書き下ろし。速い曲も、静かな曲も、ぜんぶ「始めるため」の歌。",
  "cover": "/images/cover_start-button.jpg",
  "tracks": [
   {

@@ -57,7 +57,26 @@
       (links ? '<ul class="footer-links">' + links + '</ul>' : '') +
       '<p>' + footer.copyright + '</p>';
   }
+  var releasesPromise = null;
+  function listReleases(){
+    if (releasesPromise) return releasesPromise;
+    releasesPromise = fetch('/releases/', {cache:'no-cache'})
+      .then(function(r){ if(!r.ok) throw new Error('listing'); return r.json(); })
+      .then(function(entries){
+        var dirs = entries.filter(function(e){ return e.type === 'directory'; }).map(function(e){ return e.name; });
+        return Promise.all(dirs.map(function(name){
+          return getJson('/releases/' + name + '/release.json')
+            .then(function(rel){ rel.id = rel.id || name; return rel; })
+            .catch(function(){ return null; });
+        }));
+      })
+      .then(function(list){
+        return list.filter(Boolean).sort(function(a, b){ return (b.date || '').localeCompare(a.date || ''); });
+      });
+    return releasesPromise;
+  }
   window.ALCommon = {
+    listReleases: listReleases,
     load: function(){
       return Promise.all([
         getJson('/config/config.json'),
@@ -66,7 +85,7 @@
       ]).then(function(res){
         buildHeader(res[0], res[1], []);
         buildFooter(res[0], res[2]);
-        getJson('/releases/index.json').then(function(releases){
+        listReleases().then(function(releases){
           var slot = document.querySelector('.nav-panel-items');
           if (slot){
             slot.innerHTML = (releases || []).map(function(rel){
