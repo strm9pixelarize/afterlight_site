@@ -2,7 +2,7 @@
 (function(){
   "use strict";
   function getJson(url){
-    return fetch(url).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); });
+    return fetch(url, {cache:'no-cache'}).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); });
   }
   function buildHeader(site, header){
     var el = document.getElementById('site-header');
