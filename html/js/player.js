@@ -245,5 +245,5 @@
     syncRepeat();
     syncFull();
   }
-  window.ALPlayer = { init: init, buildList: buildList, play: play };
+  window.ALPlayer = { init: init, buildList: buildList, play: play, refresh: refresh };
 })();

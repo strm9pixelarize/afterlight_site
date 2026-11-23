@@ -3,8 +3,12 @@
   "use strict";
   ALCommon.load();
   ALPlayer.init();
-  if (document.getElementById('latest-release')) ALIndex();
-  if (document.getElementById('release-list')) ALReleases();
-  if (document.getElementById('release-title')) ALAlbum();
-  if (document.getElementById('member-list')) ALAbout();
+  // ページ描画の振り分け (ソフト遷移後に router.js からも呼ばれる)
+  window.ALDispatch = function(){
+    if (document.getElementById('latest-release')) ALIndex();
+    if (document.getElementById('release-list')) ALReleases();
+    if (document.getElementById('release-title')) ALAlbum();
+    if (document.getElementById('member-list')) ALAbout();
+  };
+  ALDispatch();
 })();
