@@ -46,6 +46,7 @@ body{
   background:linear-gradient(180deg,#fdf6df 0%,var(--bg) 100%);
 }
 .hero-logo{font-size:clamp(2.6rem,8vw,4.6rem);margin:0;font-weight:800;letter-spacing:.02em}
+.hero-logo-img{width:min(560px,86vw);height:auto;display:block;margin:0 auto}
 .hero-tagline{font-size:1.1rem;margin:14px 0 4px}
 .hero-sub{color:var(--muted);margin:0;font-size:.9rem}
 main{max-width:860px;margin:0 auto;padding:0 16px}
