@@ -5,7 +5,7 @@
     var card = document.createElement('article');
     card.className = 'release-card';
     card.innerHTML =
-      '<a class="release-card-link" href="album.html?release=' + rel.id + '">' +
+      '<a class="release-card-link" href="/release/' + rel.id + '/">' +
         '<img src="' + rel.cover + '" alt="">' +
         '<div><p class="album-label">' + rel.typeLabel + '</p>' +
         '<h3></h3><p class="release-lead"></p>' +
