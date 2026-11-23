@@ -24,6 +24,20 @@ body{
 .site-nav{display:flex;gap:18px;flex-wrap:wrap}
 .site-nav a{color:#4c493f;text-decoration:none;font-size:.95rem}
 .site-nav a:hover{color:var(--accent-deep)}
+.site-logo{display:inline-flex;align-items:center;gap:10px}
+.site-logo-img{height:38px;width:auto;display:block}
+.nav-accordion{position:relative;display:inline-flex;align-items:center;gap:2px;flex-wrap:wrap}
+.nav-toggle{background:none;border:0;cursor:pointer;color:#4c493f;font-size:.78rem;padding:4px 5px;line-height:1}
+.nav-toggle:hover{color:var(--accent-deep)}
+.nav-panel{position:absolute;top:calc(100% + 10px);right:0;min-width:220px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(43,43,38,.14);padding:6px;display:none;flex-direction:column;z-index:60}
+.nav-accordion.open .nav-panel{display:flex}
+.nav-panel a{padding:8px 12px;border-radius:8px;font-size:.92rem;white-space:nowrap}
+.nav-panel a:hover{background:#f3edda}
+.nav-panel .nav-panel-all{border-top:1px solid var(--line);margin-top:4px;padding-top:10px;color:var(--accent-deep)}
+@media (max-width:640px){
+  .nav-panel{position:static;flex-basis:100%;min-width:0;box-shadow:none;border:0;background:transparent;padding:2px 0 6px 16px}
+  .nav-panel .nav-panel-all{border-top:0;margin-top:0}
+}
 .site-footer{text-align:center;color:var(--muted);font-size:.85rem;padding:32px 16px 8px}
 .footer-links{list-style:none;padding:0;margin:0 0 10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
 .footer-links a{color:var(--accent-deep)}

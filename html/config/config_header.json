@@ -1,1 +1,8 @@
-{"nav": [{"href": "/", "label": "Top"}, {"href": "/release/", "label": "Releases"}, {"href": "/release/start-button/", "label": "スタートボタン"}, {"href": "/release/saikidou-no-asa/", "label": "再起動の朝"}, {"href": "/#about", "label": "About"}]}
+{
+  "logoImage": "",
+  "nav": [
+    {"href": "/", "label": "Top"},
+    {"href": "/release/", "label": "Releases", "accordion": "releases"},
+    {"href": "/#about", "label": "About"}
+  ]
+}

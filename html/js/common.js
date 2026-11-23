@@ -4,17 +4,50 @@
   function getJson(url){
     return fetch(url, {cache:'no-cache'}).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); });
   }
-  function buildHeader(site, header){
+  function buildHeader(site, header, releases){
     var el = document.getElementById('site-header');
     if (!el) return;
+    var logoImg = header.logoImage ? '<img class="site-logo-img" src="' + header.logoImage + '" alt="">' : '';
     var nav = (header.nav || []).map(function(item){
+      if (item.accordion === 'releases'){
+        var items = (releases || []).map(function(rel){
+          return '<a href="/release/' + rel.id + '/">' + rel.title + '</a>';
+        }).join('');
+        return '<span class="nav-accordion">' +
+          '<a href="' + item.href + '">' + item.label + '</a>' +
+          '<button class="nav-toggle" type="button" aria-expanded="false" aria-label="' + item.label + 'の一覧を開く">▾</button>' +
+          '<span class="nav-panel">' + items +
+            '<a class="nav-panel-all" href="' + item.href + '">すべてのリリースを見る</a>' +
+          '</span></span>';
+      }
       return '<a href="' + item.href + '">' + item.label + '</a>';
     }).join('');
     el.innerHTML =
-      '<a class="site-logo" href="/">' +
-        site.siteName.replace('#', '<span class="hash">#</span>') +
+      '<a class="site-logo" href="/">' + logoImg +
+        '<span>' + site.siteName.replace('#', '<span class="hash">#</span>') + '</span>' +
       '</a>' +
       '<nav class="site-nav">' + nav + '</nav>';
+    // アコーディオン開閉 (外側クリック / Esc でも閉じる)
+    var acc = el.querySelector('.nav-accordion');
+    if (acc){
+      var btn = acc.querySelector('.nav-toggle');
+      btn.addEventListener('click', function(){
+        var open = acc.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(e){
+        if (!acc.contains(e.target)){
+          acc.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape'){
+          acc.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
   }
   function buildFooter(site, footer){
     var el = document.getElementById('site-footer');
@@ -31,9 +64,10 @@
       return Promise.all([
         getJson('/config/config.json'),
         getJson('/config/config_header.json'),
-        getJson('/config/config_footer.json')
+        getJson('/config/config_footer.json'),
+        getJson('/releases/index.json').catch(function(){ return []; })
       ]).then(function(res){
-        buildHeader(res[0], res[1]);
+        buildHeader(res[0], res[1], res[3]);
         buildFooter(res[0], res[2]);
         return { site: res[0], header: res[1], footer: res[2] };
       });
