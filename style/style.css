@@ -1,0 +1,85 @@
+:root{
+  --bg:#f7f4eb;
+  --ink:#2b2b26;
+  --muted:#7a7668;
+  --accent:#e8a13a;
+  --accent-deep:#c47b1d;
+  --card:#fffdf6;
+  --line:#e3ddcb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  line-height:1.7;padding-bottom:96px;
+}
+.hero{
+  text-align:center;padding:72px 20px 40px;
+  background:linear-gradient(180deg,#fdf6df 0%,var(--bg) 100%);
+}
+.hero-eyebrow{color:var(--muted);letter-spacing:.18em;font-size:.8rem;margin:0 0 8px}
+.hero-logo{font-size:clamp(2.6rem,8vw,4.6rem);margin:0;font-weight:800;letter-spacing:.02em}
+.hero-logo .hash{color:var(--accent)}
+.hero-tagline{font-size:1.1rem;margin:14px 0 4px}
+.hero-sub{color:var(--muted);margin:0;font-size:.9rem}
+main{max-width:860px;margin:0 auto;padding:0 16px}
+section{margin:48px 0}
+h2{font-size:1.6rem;margin:0 0 10px}
+.album-head{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.album-cover{width:220px;height:220px;object-fit:cover;border-radius:12px;box-shadow:0 6px 24px rgba(90,70,20,.18)}
+.album-meta{flex:1;min-width:260px}
+.album-label{color:var(--accent-deep);font-weight:700;letter-spacing:.14em;font-size:.8rem;margin:4px 0}
+.album-desc{color:#4c493f}
+.play-all{
+  background:var(--accent);color:#fff;border:none;border-radius:999px;
+  padding:10px 22px;font-size:1rem;font-weight:700;cursor:pointer;
+}
+.play-all:hover{background:var(--accent-deep)}
+.tracklist{list-style:none;margin:28px 0 0;padding:0}
+.track{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  margin-bottom:10px;padding:12px 16px;
+}
+.track-row{display:flex;align-items:center;gap:12px}
+.track-no{color:var(--muted);width:2em;text-align:right;font-variant-numeric:tabular-nums}
+.track-title{flex:1;font-weight:600}
+.track-len{color:var(--muted);font-variant-numeric:tabular-nums}
+.track-play,.track-lyrics-btn{
+  border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;
+  padding:4px 14px;font-size:.9rem;
+}
+.track-play{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;min-width:3.2em}
+.track-play:hover{background:var(--accent-deep)}
+.track.playing{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.track-lyrics{
+  display:none;white-space:pre-wrap;margin:12px 4px 4px;padding:14px;
+  background:#fbf8ee;border-radius:8px;font-size:.92rem;color:#45423a;
+  max-height:50vh;overflow:auto;
+}
+.track.lyrics-open .track-lyrics{display:block}
+.members{display:flex;gap:16px;flex-wrap:wrap}
+.member{flex:1;min-width:240px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px}
+.member h3{margin:0 0 6px;color:var(--accent-deep)}
+.member p{margin:0}
+.about-note{color:#4c493f}
+.links ul{padding-left:1.2em}
+.links a{color:var(--accent-deep)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:32px 0 8px}
+.player{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:flex;align-items:center;gap:14px;
+  background:rgba(43,43,38,.94);color:#f5f1e4;
+  padding:10px 16px;backdrop-filter:blur(6px);
+}
+.player-toggle{
+  width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--accent);color:#fff;font-size:1.1rem;flex:none;
+}
+.player-info{flex:1;min-width:0}
+.player-title{margin:0 0 4px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-seek{width:100%;accent-color:var(--accent)}
+.player-time{font-variant-numeric:tabular-nums;color:#cfc9b4;min-width:3.2em;text-align:right}
+@media (max-width:560px){
+  .album-cover{width:160px;height:160px}
+  .hero{padding-top:48px}
+}
