@@ -5,6 +5,8 @@
   var audio, bar, barTitle, barToggle, barSeek, barTime;
   var current = null;
   var queue = [];
+  var repeatMode = 'off'; // 'off' | 'all' | 'one'
+  var rate = 1;
 
   function fmt(sec){
     sec = Math.max(0, Math.floor(sec || 0));
@@ -19,18 +21,29 @@
     });
     if (barToggle) barToggle.textContent = audio.paused ? '▶' : '⏸';
   }
+  function load(item){
+    current = item;
+    audio.src = item.file;
+    audio.playbackRate = rate;
+    audio.play();
+    bar.hidden = false;
+    barTitle.textContent = item.title + ' — After#Light';
+    refresh();
+  }
   function play(item){
     if (current && current.file === item.file){
       if (audio.paused) audio.play(); else audio.pause();
       refresh();
       return;
     }
-    current = item;
-    audio.src = item.file;
-    audio.play();
-    bar.hidden = false;
-    barTitle.textContent = item.title + ' — After#Light';
-    refresh();
+    load(item);
+  }
+  function step(dir){
+    if (!current || !queue.length) return;
+    if (dir < 0 && audio.currentTime > 3){ audio.currentTime = 0; return; }
+    var idx = queue.findIndex(function(e){ return e.file === current.file; });
+    if (idx < 0) return;
+    load(queue[(idx + dir + queue.length) % queue.length]);
   }
   function buildList(container, tracks, opts){
     opts = opts || {};
@@ -88,12 +101,62 @@
       if (audio.duration) audio.currentTime = barSeek.value / 1000 * audio.duration;
     });
     audio.addEventListener('ended', function(){
+      if (repeatMode === 'one' && current){
+        audio.currentTime = 0;
+        audio.play();
+        return;
+      }
       if (current && queue.length){
         var idx = queue.findIndex(function(e){ return e.file === current.file; });
-        if (idx >= 0 && idx < queue.length - 1){ play(queue[idx+1]); return; }
+        if (idx >= 0 && idx < queue.length - 1){ load(queue[idx+1]); return; }
+        if (idx >= 0 && repeatMode === 'all'){ load(queue[0]); return; }
       }
       refresh();
     });
+    // 追加コントロール (前/次・リピート・速度) を生成してバーに差し込む
+    var prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'player-btn';
+    prevBtn.textContent = '◀◀';
+    prevBtn.setAttribute('aria-label', '前の曲');
+    prevBtn.addEventListener('click', function(){ step(-1); });
+    bar.insertBefore(prevBtn, barToggle);
+    var nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'player-btn';
+    nextBtn.textContent = '▶▶';
+    nextBtn.setAttribute('aria-label', '次の曲');
+    nextBtn.addEventListener('click', function(){ step(1); });
+    barToggle.after(nextBtn);
+    var repeatBtn = document.createElement('button');
+    repeatBtn.type = 'button';
+    repeatBtn.className = 'player-btn player-repeat';
+    function syncRepeat(){
+      repeatBtn.classList.toggle('on', repeatMode !== 'off');
+      repeatBtn.textContent = repeatMode === 'one' ? '↻1' : '↻';
+      repeatBtn.setAttribute('aria-label', 'リピート: ' + (repeatMode === 'all' ? 'アルバム' : repeatMode === 'one' ? '1曲' : 'オフ'));
+    }
+    repeatBtn.addEventListener('click', function(){
+      repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
+      syncRepeat();
+    });
+    syncRepeat();
+    bar.appendChild(repeatBtn);
+    var speedSel = document.createElement('select');
+    speedSel.className = 'player-speed';
+    speedSel.setAttribute('aria-label', '再生速度');
+    ['0.5', '0.75', '1', '1.25', '1.5', '2'].forEach(function(v){
+      var o = document.createElement('option');
+      o.value = v;
+      o.textContent = v + '×';
+      if (v === '1') o.selected = true;
+      speedSel.appendChild(o);
+    });
+    speedSel.addEventListener('change', function(){
+      rate = parseFloat(speedSel.value) || 1;
+      audio.playbackRate = rate;
+    });
+    bar.appendChild(speedSel);
   }
   window.ALPlayer = { init: init, buildList: buildList, play: play };
 })();

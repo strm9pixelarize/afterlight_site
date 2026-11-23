@@ -11,7 +11,7 @@
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
-  line-height:1.7;padding-bottom:96px;
+  line-height:1.7;padding-bottom:124px;
 }
 .hash{color:var(--accent)}
 /* header / footer (config から common.js が組み立てる) */
@@ -123,11 +123,26 @@ h2{font-size:1.6rem;margin:0 0 12px}
 @media(max-width:640px){.about-card{flex-direction:column}.about-card-icon{width:84px;height:84px}}
 /* player bar */
 .player{
-  position:fixed;left:0;right:0;bottom:0;z-index:50;
-  display:flex;align-items:center;gap:14px;
-  background:rgba(43,43,38,.94);color:#f5f1e4;
-  padding:10px 16px;backdrop-filter:blur(6px);
+  position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:50;
+  width:min(880px,calc(100% - 20px));
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:rgba(43,43,38,.96);color:#f5f1e4;
+  padding:10px 14px;border-radius:18px;
+  box-shadow:0 14px 36px rgba(30,25,10,.45);border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(6px);
 }
+.player-btn{
+  width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;flex:none;
+  background:rgba(255,255,255,.1);color:#f5f1e4;font-size:.78rem;
+}
+.player-btn:hover{background:rgba(255,255,255,.22)}
+.player-repeat{font-size:1.02rem;color:#cfc9b4}
+.player-repeat.on{color:var(--accent);background:rgba(232,161,58,.18)}
+.player-speed{
+  flex:none;background:rgba(255,255,255,.1);color:#f5f1e4;border:none;border-radius:8px;
+  padding:7px 4px;font-size:.82rem;cursor:pointer;
+}
+.player-speed option{color:#222}
 .player-toggle{
   width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
   background:var(--accent);color:#fff;font-size:1.1rem;flex:none;
@@ -141,4 +156,5 @@ h2{font-size:1.6rem;margin:0 0 12px}
   .release-card-link{flex-direction:column;align-items:flex-start}
   .release-card-link img{width:100%;height:auto}
   .hero{padding-top:24px}
+  .player-info{order:5;flex-basis:100%}
 }
