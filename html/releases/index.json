@@ -1,0 +1,18 @@
+{
+ "releases": [
+  {
+   "id": "start-button",
+   "typeLabel": "1st Album",
+   "title": "スタートボタン",
+   "cover": "images/cover_start-button.jpg",
+   "lead": "全12曲、すべて書き下ろし。速い曲も、静かな曲も、ぜんぶ「始めるため」の歌。"
+  },
+  {
+   "id": "saikidou-no-asa",
+   "typeLabel": "Single",
+   "title": "再起動の朝",
+   "cover": "images/cover_saikidou.jpg",
+   "lead": "After#Light の看板曲。止まった世界を直す指先と、小さな笑顔の歌。"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "id": "saikidou-no-asa",
+ "type": "single",
+ "typeLabel": "Single",
+ "title": "再起動の朝",
+ "cover": "images/cover_saikidou.jpg",
+ "tracks": [
+  {
+   "file": "audio/00_saikidou-no-asa_single.mp3",
+   "title": "再起動の朝",
+   "track": null,
+   "length": 190,
+   "lyrics": "[Intro]\n[electronic arpeggio, system boot up]\n\n[Verse]\n真夜中のサーバールーム　小さなランプの海\n止まった世界を直す　指先ひとつで\nエラーログの向こうに　誰かの朝がある\n眠れない夜ほど　静かに燃える\n\n[Pre-Chorus]\n大丈夫、もう一度\n最初から始めよう\n\n[Chorus]\n再起動の朝　起き上がれ stand up now\n止まった昨日を　アップデートして\n再起動の朝　つながれ link up now\nこの小さな部屋から　世界へ届け\n\n[Verse 2]\nケーブルの森を抜けて　ファンの音が歌う\nバックアップの向こうに　守りたい日常\n完璧じゃなくていい　落ちても直せる\nその繰り返しが　強さになる\n\n[Chorus]\n再起動の朝　起き上がれ stand up now\n止まった昨日を　アップデートして\n再起動の朝　つながれ link up now\nこの小さな部屋から　世界へ届け\n\n[Bridge]\nOne, two, system check\nAll green, we're back online\n\n[Final Chorus]\n再起動の朝　起き上がれ stand up now\n新しい今日を　ブートさせよう\n再起動の朝　つながれ link up now\nこの小さな光が　誰かを照らす\n[Outro]",
+   "cover": "images/cover_saikidou.jpg"
+  }
+ ]
+}

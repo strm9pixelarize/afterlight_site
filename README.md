@@ -1,29 +1,44 @@
-# After#Light 公式サイト
+# After#Light 公式サイト (v2)
 
-公開先: **after_light.architectural-n.net**
-1stアルバム『スタートボタン』全12曲 + シングル「再起動の朝」をフリーで聴ける静的サイト。
+公開先: **after-light.architectural-n.net**
+本家サイトと同じ方式: 共通ヘッダー/フッター + config JSON 管理 + 紹介文は Markdown。
 
 ## 構成
 
 ```
-index.html          トップページ
-style/style.css
-script/script.js    プレイヤー (単一 <audio>、アルバム通し再生対応)
-data/tracks.json    曲目・尺・歌詞 (MP3のUSLTタグから生成)
-images/             ジャケット2点 (MP3のAPICから抽出)
-audio/              楽曲MP3 13ファイル (タグ整備済み完成版)
+html/
+  index.html            Top の枠 (ヒーロー / Releases / About)
+  album.html            リリース紹介の枠 (?release=<id>)
+  config/
+    config.json           サイト名・タグライン
+    config_header.json    ナビ項目
+    config_footer.json    フッター・リンク集
+    config_members.json   Asahi / Akari 紹介・About本文
+  js/
+    common.js     config を読んでヘッダー/フッターを組立
+    player.js     単一 <audio> の共通プレイヤー
+    release.js    リリース一覧と紹介ページの描画
+    marked.min.js Markdown パーサ (marked v12.0.2, MIT)
+  releases/
+    index.json          リリース一覧 (カード表示用)
+    start-button/
+      release.json      曲目・尺・歌詞
+      intro.md          アルバム紹介文 ← 更新はここだけ
+    saikidou-no-asa/
+      release.json / intro.md
+  audio/ images/ css/
+conf.d/nginx.conf       CSP 付きサーバー設定
 ```
-
-## デプロイ手順 (cast サイトと同じ方式)
-
-1. ホストに配置: `/DATA/AppData/afterlight-site/` にこのフォルダ一式を置く
-2. Portainer Stack (nginx:alpine 単独) を cast と同形式で作成
-   - ポートは空きを確認して決定 (3104 は cast 使用中。3105 が候補だが要確認)
-   - html 一式を `/usr/share/nginx/html` にマウント
-3. Cloudflare Tunnel で `after_light.architectural-n.net` を Stack のポートへ向ける
-4. CSP を付ける場合は cast の conf.d を流用し、`media-src 'self'` を許可すること (自サイトの MP3 再生に必要)
 
 ## 更新方法
 
-- 曲の差し替え: `audio/` の MP3 を差し替え、`data/tracks.json` の該当曲の lyrics / length を合わせる
-- CSS/JS を変えたら `index.html` の `?v=` クエリを上げる (7日キャッシュ回避、本家サイトの運用に合わせた)
+- 紹介文を直す: 対象の `intro.md` を編集して push → ホストで pull
+- メンバー紹介・リンク・ナビ: `config/*.json` を編集
+- 新しいリリースを足す: `releases/<id>/` を作って release.json + intro.md を置き、
+  `releases/index.json` と `config_header.json` に1行ずつ追加
+- CSS/JS を変えたら html 内の `?v=` クエリを上げる (7日キャッシュ回避)
+
+## デプロイ
+
+Portainer Stack (nginx:alpine, 3105:80) が `html/` と `conf.d/` をマウント。
+Cloudflare Tunnel の Public Hostname: after-light.architectural-n.net → localhost:3105。
