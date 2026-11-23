@@ -3,6 +3,8 @@
 (function(){
   "use strict";
   var audio, bar, barTitle, barToggle, barSeek, barTime;
+  var fullEl, pfArt, pfTitle, pfLyrics, pfSeek, pfTimeCur, pfTimeDur, pfToggle;
+  var coverUrl = '';
   var current = null;
   var queue = [];
   var repeatMode = 'off'; // 'off' | 'all' | 'one'
@@ -20,6 +22,7 @@
       if (btn) btn.textContent = (on && !audio.paused) ? '⏸' : '▶';
     });
     if (barToggle) barToggle.textContent = audio.paused ? '▶' : '⏸';
+    if (pfToggle) pfToggle.textContent = audio.paused ? '▶' : '⏸';
   }
   function load(item){
     current = item;
@@ -29,6 +32,14 @@
     bar.hidden = false;
     barTitle.textContent = item.title + ' — After#Light';
     refresh();
+    syncFull();
+  }
+  function syncFull(){
+    if (!pfTitle) return;
+    pfTitle.textContent = current ? current.title : '—';
+    pfLyrics.textContent = current ? (current.lyrics || '（歌詞未収録）') : '曲を再生すると、ここに歌詞が表示されます';
+    pfLyrics.scrollTop = 0;
+    pfArt.src = coverUrl || '/icon-afterlight-v6.png';
   }
   function play(item){
     if (current && current.file === item.file){
@@ -48,6 +59,7 @@
   function buildList(container, tracks, opts){
     opts = opts || {};
     if (opts.queue) queue = opts.queue.slice();
+    if (opts.cover) coverUrl = opts.cover;
     tracks.forEach(function(entry){
       var li = document.createElement('li');
       li.className = 'track';
@@ -95,6 +107,11 @@
       if (audio.duration){
         barSeek.value = Math.floor(audio.currentTime / audio.duration * 1000);
         barTime.textContent = fmt(audio.currentTime);
+        if (pfSeek){
+          pfSeek.value = Math.floor(audio.currentTime / audio.duration * 1000);
+          pfTimeCur.textContent = fmt(audio.currentTime);
+          pfTimeDur.textContent = fmt(audio.duration);
+        }
       }
     });
     barSeek.addEventListener('input', function(){
@@ -113,50 +130,120 @@
       }
       refresh();
     });
-    // 追加コントロール (前/次・リピート・速度) を生成してバーに差し込む
-    var prevBtn = document.createElement('button');
-    prevBtn.type = 'button';
-    prevBtn.className = 'player-btn';
-    prevBtn.textContent = '◀◀';
-    prevBtn.setAttribute('aria-label', '前の曲');
-    prevBtn.addEventListener('click', function(){ step(-1); });
-    bar.insertBefore(prevBtn, barToggle);
-    var nextBtn = document.createElement('button');
-    nextBtn.type = 'button';
-    nextBtn.className = 'player-btn';
-    nextBtn.textContent = '▶▶';
-    nextBtn.setAttribute('aria-label', '次の曲');
-    nextBtn.addEventListener('click', function(){ step(1); });
-    barToggle.after(nextBtn);
-    var repeatBtn = document.createElement('button');
-    repeatBtn.type = 'button';
-    repeatBtn.className = 'player-btn player-repeat';
+    // 追加コントロール (前/次・リピート・速度) と全画面プレイヤー
+    var repeatBtns = [];
+    var speedSels = [];
     function syncRepeat(){
-      repeatBtn.classList.toggle('on', repeatMode !== 'off');
-      repeatBtn.textContent = repeatMode === 'one' ? '↻1' : '↻';
-      repeatBtn.setAttribute('aria-label', 'リピート: ' + (repeatMode === 'all' ? 'アルバム' : repeatMode === 'one' ? '1曲' : 'オフ'));
+      repeatBtns.forEach(function(b){
+        b.classList.toggle('on', repeatMode !== 'off');
+        b.textContent = repeatMode === 'one' ? '↻1' : '↻';
+        b.setAttribute('aria-label', 'リピート: ' + (repeatMode === 'all' ? 'アルバム' : repeatMode === 'one' ? '1曲' : 'オフ'));
+      });
     }
-    repeatBtn.addEventListener('click', function(){
-      repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
-      syncRepeat();
+    function makeBtn(text, label, fn){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'player-btn';
+      b.textContent = text;
+      b.setAttribute('aria-label', label);
+      b.addEventListener('click', fn);
+      return b;
+    }
+    function makeRepeatBtn(){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'player-btn player-repeat';
+      b.addEventListener('click', function(){
+        repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
+        syncRepeat();
+      });
+      repeatBtns.push(b);
+      return b;
+    }
+    function makeSpeedSel(){
+      var sel = document.createElement('select');
+      sel.className = 'player-speed';
+      sel.setAttribute('aria-label', '再生速度');
+      ['0.5', '0.75', '1', '1.25', '1.5', '2'].forEach(function(v){
+        var o = document.createElement('option');
+        o.value = v;
+        o.textContent = v + '×';
+        if (v === '1') o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', function(){
+        rate = parseFloat(sel.value) || 1;
+        audio.playbackRate = rate;
+        speedSels.forEach(function(s){ if (s !== sel) s.value = sel.value; });
+      });
+      speedSels.push(sel);
+      return sel;
+    }
+    bar.insertBefore(makeBtn('◀◀', '前の曲', function(){ step(-1); }), barToggle);
+    barToggle.after(makeBtn('▶▶', '次の曲', function(){ step(1); }));
+    bar.appendChild(makeRepeatBtn());
+    bar.appendChild(makeSpeedSel());
+    // 全画面プレイヤー本体
+    fullEl = document.createElement('div');
+    fullEl.className = 'player-full';
+    fullEl.hidden = true;
+    fullEl.innerHTML =
+      '<button type="button" class="pf-close" aria-label="閉じる">✕</button>' +
+      '<img class="pf-art" id="pfArt" alt="">' +
+      '<p class="pf-title" id="pfTitle">—</p>' +
+      '<p class="pf-artist">After#Light</p>' +
+      '<div class="pf-lyrics" id="pfLyrics"></div>' +
+      '<div class="pf-seekrow"><span class="pf-time" id="pfTimeCur">0:00</span>' +
+      '<input class="player-seek pf-seek" id="pfSeek" type="range" min="0" max="1000" value="0" aria-label="シーク">' +
+      '<span class="pf-time" id="pfTimeDur">0:00</span></div>' +
+      '<div class="pf-controls"></div>';
+    document.body.appendChild(fullEl);
+    pfArt = fullEl.querySelector('#pfArt');
+    pfTitle = fullEl.querySelector('#pfTitle');
+    pfLyrics = fullEl.querySelector('#pfLyrics');
+    pfSeek = fullEl.querySelector('#pfSeek');
+    pfTimeCur = fullEl.querySelector('#pfTimeCur');
+    pfTimeDur = fullEl.querySelector('#pfTimeDur');
+    pfSeek.addEventListener('input', function(){
+      if (audio.duration) audio.currentTime = pfSeek.value / 1000 * audio.duration;
+    });
+    var pfControls = fullEl.querySelector('.pf-controls');
+    pfControls.appendChild(makeBtn('◀◀', '前の曲', function(){ step(-1); }));
+    pfToggle = document.createElement('button');
+    pfToggle.type = 'button';
+    pfToggle.className = 'player-toggle pf-toggle';
+    pfToggle.textContent = '▶';
+    pfToggle.setAttribute('aria-label', '再生/停止');
+    pfToggle.addEventListener('click', function(){
+      if (!current) return;
+      if (audio.paused) audio.play(); else audio.pause();
+      refresh();
+    });
+    pfControls.appendChild(pfToggle);
+    pfControls.appendChild(makeBtn('▶▶', '次の曲', function(){ step(1); }));
+    pfControls.appendChild(makeRepeatBtn());
+    pfControls.appendChild(makeSpeedSel());
+    function openFull(){
+      fullEl.hidden = false;
+      document.body.style.overflow = 'hidden';
+      syncFull();
+      refresh();
+    }
+    function closeFull(){
+      fullEl.hidden = true;
+      document.body.style.overflow = '';
+    }
+    fullEl.querySelector('.pf-close').addEventListener('click', closeFull);
+    bar.appendChild(makeBtn('⛶', '全画面プレイヤー', openFull));
+    bar.addEventListener('click', function(e){
+      if (e.target.closest && e.target.closest('button, select, input, a')) return;
+      openFull();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !fullEl.hidden) closeFull();
     });
     syncRepeat();
-    bar.appendChild(repeatBtn);
-    var speedSel = document.createElement('select');
-    speedSel.className = 'player-speed';
-    speedSel.setAttribute('aria-label', '再生速度');
-    ['0.5', '0.75', '1', '1.25', '1.5', '2'].forEach(function(v){
-      var o = document.createElement('option');
-      o.value = v;
-      o.textContent = v + '×';
-      if (v === '1') o.selected = true;
-      speedSel.appendChild(o);
-    });
-    speedSel.addEventListener('change', function(){
-      rate = parseFloat(speedSel.value) || 1;
-      audio.playbackRate = rate;
-    });
-    bar.appendChild(speedSel);
+    syncFull();
   }
   window.ALPlayer = { init: init, buildList: buildList, play: play };
 })();

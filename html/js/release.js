@@ -91,7 +91,7 @@
       document.getElementById('release-type').textContent = rel.typeLabel;
       document.getElementById('release-title').textContent = rel.title;
       var list = document.getElementById('tracklist');
-      ALPlayer.buildList(list, rel.tracks, { numbered: rel.type === 'album', queue: rel.tracks });
+      ALPlayer.buildList(list, rel.tracks, { numbered: rel.type === 'album', queue: rel.tracks, cover: rel.cover });
       var playAll = document.getElementById('playAllBtn');
       if (rel.tracks.length > 1){
         playAll.hidden = false;
