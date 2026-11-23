@@ -67,6 +67,10 @@
     barToggle = document.getElementById('playerToggle');
     barSeek = document.getElementById('playerSeek');
     barTime = document.getElementById('playerTime');
+    // 簡易抑止: プレイヤーとトラック行での右クリック (名前を付けて保存) を無効化
+    document.addEventListener('contextmenu', function(e){
+      if (e.target.closest && e.target.closest('#player, .track')) e.preventDefault();
+    });
     barToggle.addEventListener('click', function(){
       if (!current) return;
       if (audio.paused) audio.play(); else audio.pause();

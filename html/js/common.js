@@ -55,6 +55,7 @@
     }).join('');
     el.innerHTML =
       (links ? '<ul class="footer-links">' + links + '</ul>' : '') +
+      (footer.note ? '<p class="footer-note">' + footer.note + '</p>' : '') +
       '<p>' + footer.copyright + '</p>';
   }
   var releasesPromise = null;
