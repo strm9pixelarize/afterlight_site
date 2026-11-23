@@ -8,6 +8,10 @@
   --line:#e3ddcb;
 }
 *{box-sizing:border-box}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+.pf-lyrics,.player-full{scrollbar-width:none}
+.pf-lyrics::-webkit-scrollbar,.player-full::-webkit-scrollbar{display:none}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
@@ -49,6 +53,21 @@ body{
 .hero-logo-img{width:min(560px,86vw);height:auto;display:block;margin:0 auto}
 .hero-tagline{font-size:1.1rem;margin:14px 0 4px}
 .hero-sub{color:var(--muted);margin:0;font-size:.9rem}
+.scroll-hint{display:block;width:26px;margin:16px auto 0;padding:8px 0 2px}
+.scroll-hint span{
+  display:block;width:13px;height:13px;margin:-4px auto 0;
+  border-right:2px solid var(--accent-deep);border-bottom:2px solid var(--accent-deep);
+  transform:rotate(45deg);opacity:0;animation:chev 1.9s ease-in-out infinite;
+}
+.scroll-hint span:nth-child(2){animation-delay:.2s}
+.scroll-hint span:nth-child(3){animation-delay:.4s}
+@keyframes chev{
+  0%{opacity:0;transform:translateY(-3px) rotate(45deg)}
+  35%{opacity:1}
+  70%{opacity:1}
+  100%{opacity:0;transform:translateY(4px) rotate(45deg)}
+}
+@media (prefers-reduced-motion: reduce){.scroll-hint span{animation:none;opacity:.75}}
 main{max-width:860px;margin:0 auto;padding:0 16px}
 section{margin:44px 0}
 h2{font-size:1.6rem;margin:0 0 12px}
