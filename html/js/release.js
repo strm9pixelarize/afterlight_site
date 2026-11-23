@@ -22,7 +22,7 @@
       var wrap = document.getElementById('latest-release');
       if (list.length) wrap.appendChild(releaseCard(list[0]));
     });
-    ALCommon.getJson('/config/config_members.json').then(function(data){
+    ALCommon.getJson('/config/config_about.json').then(function(data){
       var wrap = document.getElementById('member-list');
       data.members.forEach(function(m){
         var div = document.createElement('div');
