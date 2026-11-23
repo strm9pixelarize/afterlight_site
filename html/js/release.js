@@ -23,14 +23,42 @@
       if (list.length) wrap.appendChild(releaseCard(list[0]));
     });
     ALCommon.getJson('/config/config_about.json').then(function(data){
-      document.getElementById('about-note').textContent = data.about || '';
+      fillAboutCard(data);
+      var ps = data.paragraphs || [];
+      document.getElementById('about-note').textContent = ps[0] || data.about || '';
     });
   };
+
+  // About カードの共通部分 (アイコン/タイトル/タグライン) を config_about.json から埋める
+  function fillAboutCard(data){
+    var icon = document.getElementById('about-icon');
+    if (icon && data.icon) icon.src = data.icon;
+    var t = document.getElementById('about-title');
+    if (t) t.textContent = data.title || '';
+    var st = document.getElementById('about-subtitle');
+    if (st) st.textContent = data.subtitle || '';
+    var tg = document.getElementById('about-tagline');
+    if (tg) tg.textContent = data.tagline || '';
+  }
 
   // about.html: About 本文 + メンバー紹介
   window.ALAbout = function(){
     ALCommon.getJson('/config/config_about.json').then(function(data){
-      document.getElementById('about-note').textContent = data.about || '';
+      fillAboutCard(data);
+      var pw = document.getElementById('about-paragraphs');
+      (data.paragraphs || []).forEach(function(text){
+        var p = document.createElement('p');
+        p.className = 'about-card-text';
+        p.textContent = text;
+        pw.appendChild(p);
+      });
+      var tw = document.getElementById('about-tags');
+      (data.tags || []).forEach(function(tag){
+        var sp = document.createElement('span');
+        sp.className = 'about-tag';
+        sp.textContent = tag;
+        tw.appendChild(sp);
+      });
       var wrap = document.getElementById('member-list');
       (data.members || []).forEach(function(m){
         var div = document.createElement('div');
