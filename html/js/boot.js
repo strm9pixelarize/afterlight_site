@@ -19,7 +19,7 @@
   "use strict";
   var loader = document.getElementById('al-loader');
   if (!loader) return;
-  var MIN_MS = 3000, MAX_MS = 10000;
+  var MIN_MS = 1500, MAX_MS = 10000;
   var loaded = false, finished = false;
   document.documentElement.style.overflow = 'hidden';
   function finish(){
