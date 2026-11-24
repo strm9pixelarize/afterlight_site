@@ -14,6 +14,8 @@ html::-webkit-scrollbar{display:none}
 .pf-lyrics::-webkit-scrollbar,.player-full::-webkit-scrollbar{display:none}
 body{
   margin:0;background:var(--bg);color:var(--ink);
+  background-image:linear-gradient(to right, rgba(226,232,240,.6) 1px, transparent 1px),linear-gradient(to bottom, rgba(226,232,240,.6) 1px, transparent 1px);
+  background-size:32px 32px;
   font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
   line-height:1.7;padding-bottom:124px;
 }
