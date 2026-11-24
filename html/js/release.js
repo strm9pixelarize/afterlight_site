@@ -97,13 +97,21 @@
         playAll.hidden = false;
         playAll.addEventListener('click', function(){ ALPlayer.play(rel.tracks[0]); });
       }
-      return fetch(base + 'intro.md');
-    }).then(function(r){ return r.text(); })
-      .then(function(md){
-        document.getElementById('release-intro').innerHTML = marked.parse(md);
-      })
-      .catch(function(){
-        document.getElementById('release-title').textContent = '見つかりませんでした';
+    }).catch(function(){
+      document.getElementById('release-title').textContent = '見つかりませんでした';
+    });
+    // 紹介文は本体と切り離して読み込む (失敗してもタイトルを巻き込まない。1回だけ再試行)
+    function loadIntro(attempt){
+      fetch(base + 'intro.md').then(function(r){
+        if (!r.ok) throw new Error('intro');
+        return r.text();
+      }).then(function(md){
+        var el = document.getElementById('release-intro');
+        el.innerHTML = window.marked ? marked.parse(md) : md;
+      }).catch(function(){
+        if (attempt < 1) setTimeout(function(){ loadIntro(attempt + 1); }, 600);
       });
+    }
+    loadIntro(0);
   };
 })();
