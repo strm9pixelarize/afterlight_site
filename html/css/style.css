@@ -213,7 +213,7 @@ h2{font-size:1.6rem;margin:0 0 12px}
   background:linear-gradient(155deg,#33302a 0%,#211f1b 70%);
 }
 .al-loader-logo{
-  width:min(210px,58vw);aspect-ratio:701/985;
+  width:min(430px,86vw);aspect-ratio:747/454;
   background:url('/logo-al-mark.png') center/contain no-repeat;
 }
 @supports ((-webkit-mask-image:url('')) or (mask-image:url(''))){
