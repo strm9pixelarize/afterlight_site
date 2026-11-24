@@ -203,3 +203,47 @@ h2{font-size:1.6rem;margin:0 0 12px}
   .hero{padding-top:24px}
   .player-info{order:5;flex-basis:100%}
 }
+
+/* ===== ローディング画面 =====
+   初回読み込み時のみ表示 (制御は boot.js)。ロゴ (A#L マーク) には左上→右下へ流れる
+   グラデーションを流し、終了時は画面自体が左上→右下へ斜めワイプで消える。 */
+.al-loader{
+  position:fixed;inset:0;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
+  background:linear-gradient(155deg,#33302a 0%,#211f1b 70%);
+}
+.al-loader-logo{
+  width:min(210px,58vw);aspect-ratio:701/985;
+  background:url('/logo-al-mark.png') center/contain no-repeat;
+}
+@supports ((-webkit-mask-image:url('')) or (mask-image:url(''))){
+  .al-loader-logo{
+    background:linear-gradient(135deg,#fca73f 0%,#ffe9bd 25%,#fca73f 50%,#ffe9bd 75%,#fca73f 100%);
+    background-size:200% 200%;
+    -webkit-mask-image:url('/logo-al-mark.png');mask-image:url('/logo-al-mark.png');
+    -webkit-mask-position:center;mask-position:center;
+    -webkit-mask-size:contain;mask-size:contain;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    animation:al-logo-flow 2.6s linear infinite;
+  }
+}
+@keyframes al-logo-flow{
+  0%{background-position:0% 0%}
+  100%{background-position:100% 100%}
+}
+.al-loader-caption{
+  margin:0;font-size:11px;letter-spacing:.42em;text-indent:.42em;
+  color:rgba(252,167,63,.8);animation:al-caption-pulse 1.6s ease-in-out infinite;
+}
+@keyframes al-caption-pulse{0%,100%{opacity:.45}50%{opacity:1}}
+.al-loader--done{animation:al-wipe .75s ease-in-out forwards}
+@keyframes al-wipe{
+  0%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 0)}
+  50%{clip-path:polygon(100% 0,100% 0,100% 100%,0 100%,0 100%)}
+  100%{clip-path:polygon(100% 100%,100% 100%,100% 100%,100% 100%,100% 100%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .al-loader-logo{animation:none}
+  .al-loader-caption{animation:none}
+  .al-loader--done{animation:none;opacity:0}
+}
