@@ -80,6 +80,26 @@
     });
   };
 
+
+  // Markdown パーサ (marked) の遅延読み込み: アルバムページ以外からソフト遷移で
+  // 来ると土台の script が読み込まれていないため、必要になった時点で読み込む
+  var markedLoading = null;
+  function ensureMarked(){
+    if (window.marked) return Promise.resolve();
+    if (markedLoading) return markedLoading;
+    markedLoading = new Promise(function(resolve, reject){
+      var s = document.createElement('script');
+      s.src = '/js/marked.min.js?v=20261123k';
+      s.onload = function(){
+        if (window.marked) resolve();
+        else { markedLoading = null; reject(new Error('marked')); }
+      };
+      s.onerror = function(){ markedLoading = null; reject(new Error('marked')); };
+      document.head.appendChild(s);
+    });
+    return markedLoading;
+  }
+
   // album.html: ?release=<id> の紹介 (intro.md) + 全曲リスト
   window.ALAlbum = function(){
     var seg = location.pathname.split('/').filter(Boolean);
@@ -106,8 +126,12 @@
         if (!r.ok) throw new Error('intro');
         return r.text();
       }).then(function(md){
-        var el = document.getElementById('release-intro');
-        el.innerHTML = window.marked ? marked.parse(md) : md;
+        // marked が無い環境では読み直してから変換する。
+        // 読み込めない場合は生の Markdown を出さず、紹介欄は空のままにする
+        return ensureMarked().then(function(){
+          var el = document.getElementById('release-intro');
+          if (el) el.innerHTML = marked.parse(md);
+        });
       }).catch(function(){
         if (attempt < 1) setTimeout(function(){ loadIntro(attempt + 1); }, 600);
       });
