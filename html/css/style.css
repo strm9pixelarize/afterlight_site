@@ -80,7 +80,9 @@ h2{font-size:1.6rem;margin:0 0 12px}
 .release-card-link img{width:140px;height:140px;object-fit:cover;border-radius:8px;flex:none}
 .release-card h3{margin:2px 0 6px;font-size:1.35rem}
 .release-lead{margin:0;color:#4c493f}
-.release-more{color:var(--accent-deep);font-weight:700;margin:8px 0 0}
+.release-more{margin:14px 0 0}
+.release-more a{display:inline-block;background:var(--ink);color:#fca73f;font-weight:700;text-decoration:none;padding:10px 24px;border-radius:999px;border:1px solid rgba(252,167,63,.35);transition:background .2s ease}
+.release-more a:hover{background:#3d3a31}
 .album-label{color:var(--accent-deep);font-weight:700;letter-spacing:.14em;font-size:.8rem;margin:4px 0}
 /* album page */
 .album-head{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
