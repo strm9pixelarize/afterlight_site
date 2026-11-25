@@ -89,7 +89,7 @@
     if (markedLoading) return markedLoading;
     markedLoading = new Promise(function(resolve, reject){
       var s = document.createElement('script');
-      s.src = '/js/marked.min.js?v=20261123k';
+      s.src = '/js/marked.min.js?v=20261125a';
       s.onload = function(){
         if (window.marked) resolve();
         else { markedLoading = null; reject(new Error('marked')); }
